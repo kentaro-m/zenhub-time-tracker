@@ -1,0 +1,39 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Description: >-
+  A function that moves an issue into ZenHub pipeline, keeps track of lead time.
+
+Parameters:
+  ZenHubToken:
+    Description: A token for calling ZenHub API.
+    Type: String
+  SlackWebhookUrl:
+    Description: A url for sending data into Slack
+    Type: String
+
+Resources:
+  zenhubTimeTracker:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: src/index.handler
+      Runtime: nodejs8.10
+      CodeUri: .
+      Description: >-
+        A function that moves an issue into ZenHub pipeline, keeps track of lead time.
+      MemorySize: 128
+      Timeout: 5
+      Events:
+        Api1:
+          Type: Api
+          Properties:
+            Path: /
+            Method: POST
+      Environment:
+        Variables:
+          SLACK_WEBHOOK_URL: !Ref SlackWebhookUrl
+          ZENHUB_API_TOKEN: !Ref ZenHubToken
+
+Outputs:
+  RequestURL:
+    Description: "API Gateway endpoint URL to add the ZenHub webhook configuration."
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"

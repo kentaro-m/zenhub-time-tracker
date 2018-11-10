@@ -1,0 +1,21 @@
+{
+  "github": {
+    "host": ""
+  },
+  "zenhub": {
+    "host": "",
+    "repoId": ""
+  },
+  "slack": {
+    "message": {
+      "text": "moved an issue.",
+      "color": {
+        "unit": "Hours",
+        "threshold": {
+          "danger": 24,
+          "warn": 12
+        }
+      }
+    }
+  }
+}
